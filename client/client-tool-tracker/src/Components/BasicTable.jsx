@@ -1,19 +1,17 @@
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 
-
-export default function BasicTable({data}) {
-    console.log(data)
+export default function BasicTable({ data }) {
+  console.log(data);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -28,12 +26,14 @@ export default function BasicTable({data}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row ,i) => (
+          {data.map((row) => (
             <TableRow
               key={row._id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row" align="right">{row.name}</TableCell>
+              <TableCell component="th" scope="row" align="center">
+                {row.name}
+              </TableCell>
               <TableCell align="center">{row.cdsid}</TableCell>
               <TableCell align="center">{row.location}</TableCell>
               <TableCell align="center">{row.asset_category}</TableCell>
