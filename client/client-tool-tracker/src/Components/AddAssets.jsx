@@ -21,7 +21,7 @@ function AddAssets({ isCancled }) {
 
 
   const onAddAsset = async () => {
-    if (name && cdsid && location && assetCategory && assetId && project && assetType) {
+    // if (name && cdsid && location && assetCategory && assetId && project && assetType) {
       const asset = { name, cdsid, location, assetCategory, assetId, project ,assetType };
       try {
         const response = await fetch(`${localhost}/assets/add`, {
@@ -40,13 +40,13 @@ function AddAssets({ isCancled }) {
       } catch (error) {
         console.error('Error:', error);
       }
-    }
+    // }
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("add")
-    onAddAsset({ name, cdsid, location, assetCategory, assetId , assetType});
+    onAddAsset({ name, cdsid, location, assetCategory, assetId , project,assetType});
     clearFeild()
   };
 
