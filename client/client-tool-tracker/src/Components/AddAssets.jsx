@@ -63,7 +63,7 @@ function AddAssets({ isCancled }) {
         <div className='form-group'>
           <label>
             CDSID:
-            <input type="text" value={cdsid} onChange={(e) => setCdsid(e.target.value)} required />
+            <input type="text" value={cdsid} onChange={(e) => setCdsid(e.target.value)}  />
           </label>
         </div>
 
@@ -104,7 +104,7 @@ function AddAssets({ isCancled }) {
         <div className='form-group'>
           <label>
             Asset Type:
-            <input type="text" value={assetType} onChange={(e) => setAssetType(e.target.value)} required />
+            <input type="text" value={assetType} onChange={(e) => setAssetType(e.target.value)} />
           </label>
         </div>
 
@@ -112,7 +112,7 @@ function AddAssets({ isCancled }) {
         <div className='form-group'>
           <label>
             Asset ID:
-            <input type="text" value={assetId} onChange={(e) => setAssetId(e.target.value)} required />
+            <input type="text" value={assetId} onChange={(e) => setAssetId(e.target.value)} />
           </label>
         </div>
 
