@@ -17,6 +17,7 @@ function AddAssets({ isCancled }) {
     setAssetCategory('')
     setAssetId('')
     setProject('')
+    setAssetType('')
   }
 
 
@@ -119,7 +120,7 @@ function AddAssets({ isCancled }) {
         <div className='form-group'>
           <label>
             Project:
-            <input type="text" value={project} onChange={(e) => setProject(e.target.value)} required />
+            <input type="text" value={project} onChange={(e) => setProject(e.target.value)} />
           </label>
         </div>
 
