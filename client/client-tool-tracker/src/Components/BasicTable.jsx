@@ -20,6 +20,7 @@ export default function BasicTable({ data }) {
             <TableCell align="center">Name</TableCell>
             <TableCell align="center">CDSID</TableCell>
             <TableCell align="center">Location</TableCell>
+            <TableCell align="center">Asset Category</TableCell>
             <TableCell align="center">Asset Type</TableCell>
             <TableCell align="center">Asset ID</TableCell>
             <TableCell align="center">Project</TableCell>
@@ -37,6 +38,7 @@ export default function BasicTable({ data }) {
               <TableCell align="center">{row.cdsid}</TableCell>
               <TableCell align="center">{row.location}</TableCell>
               <TableCell align="center">{row.asset_category}</TableCell>
+              <TableCell align="center">{row.asset_type}</TableCell>
               <TableCell align="center">{row.asset_id}</TableCell>
               <TableCell align="center">{row.project}</TableCell>
             </TableRow>
