@@ -68,18 +68,20 @@ app.get("/assets/find-by-category/:category/:value", async (req, res) => {
 
 app.post("/assets/add", async (req, res) => {
   console.log(req.body.asset);
-  let { name, cdsid, location, assetCategory, assetId, project } =
+  let { name, cdsid, location, assetType ,assetCategory, assetId, project } =
     req.body.asset;
   name = name.toUpperCase();
   location = location.toUpperCase();
   assetCategory = assetCategory.toUpperCase();
   project = project.toUpperCase();
+  assetType.toUpperCase();
 
   try {
     const assignedAssest = new AssignedAssest({
       name,
       cdsid,
       location,
+      asset_type : assetType,
       asset_category: assetCategory,
       asset_id: assetId,
       project,

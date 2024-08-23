@@ -20,7 +20,7 @@ export default function BasicTable({ data }) {
             <TableCell align="center">Name</TableCell>
             <TableCell align="center">CDSID</TableCell>
             <TableCell align="center">Location</TableCell>
-            <TableCell align="center">Asset Category</TableCell>
+            <TableCell align="center">Asset Type</TableCell>
             <TableCell align="center">Asset ID</TableCell>
             <TableCell align="center">Project</TableCell>
           </TableRow>

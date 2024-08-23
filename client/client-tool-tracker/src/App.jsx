@@ -4,6 +4,7 @@ import Assets from "./Components/Assets";
 import Header from "./Components/Header";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { localhost } from "./Production";
 
 function App() {
   const searched = (filterType, filterValue) => {
@@ -47,9 +48,9 @@ function App() {
   const fetchAssets = async (filterType, filterValue) => {
     if (filterValue !== "" && filterType !== "NONE") {
       try {
-        console.log(`/assets/find-by-category/${filterType}/${filterValue}`);
+        console.log(`${localhost}/assets/find-by-category/${filterType}/${filterValue}`);
         const response = await fetch(
-          `/assets/find-by-category/${filterType}/${filterValue}`
+          `${localhost}/assets/find-by-category/${filterType}/${filterValue}`
         );
         const data = await response.json();
         setAssets(data);
@@ -60,7 +61,7 @@ function App() {
       }
     } else {
       try {
-        const response = await fetch("/assets/findall");
+        const response = await fetch(`${localhost}/assets/findall`);
         const data = await response.json();
         console.log(data);
         setAssets(data);

@@ -13,6 +13,9 @@ const assignedAssestSchema = new mongoose.Schema({
     asset_category: {
       type: String,
     },
+    asset_type:{
+      type:String
+    },
     asset_id: {
       type: String,
     },
