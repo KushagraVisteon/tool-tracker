@@ -13,7 +13,7 @@ function App() {
   };
 
   const [assets, setAssets] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const download = () => {
@@ -46,6 +46,8 @@ function App() {
   };
 
   const fetchAssets = async (filterType, filterValue) => {
+    setLoading(true);
+    setAssets([]);
     if (filterValue !== "" && filterType !== "NONE") {
       try {
         console.log(`${localhost}/assets/find-by-category/${filterType}/${filterValue}`);
@@ -77,7 +79,7 @@ function App() {
   return (
     <div className="app">
       <Header searched={searched} />
-      <Assets download={download} data={assets} />
+      <Assets loading={loading} download={download} data={assets} />
     </div>
   );
 }
