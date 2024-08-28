@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Header({ changeCategory, searched }) {
 
@@ -7,14 +7,72 @@ function Header({ changeCategory, searched }) {
   const [categoryValue, setCategoryValue] = useState("");
 
   const handleSelectChange = (event) => {
-    const value = event.target.value
+    setCategoryValue("");
+    const value = event.target.value;
+    setSelectedValue(value);
+
+    // Enable input/select dropdown based on the selected filter
     if (value !== "NONE") {
-      setEnableInput(true)
+      setEnableInput(true);
+    } else {
+      setEnableInput(false);
+      setCategoryValue(''); // Reset category value when no filter is selected
     }
-    if (value === "NONE") {
-      setEnableInput(false)
+  };
+
+  useEffect(() => {
+    console.log("categoryValue is: " + categoryValue)
+  }, [categoryValue])
+
+  // Determine what input type to show
+  const renderInputField = () => {
+    if (selectedValue === "LOCATION") {
+      return (
+        <select
+          className="category-input"
+          value={categoryValue}
+          onChange={(e) => setCategoryValue(e.target.value)}
+        >
+          <option value="">Select Location</option>
+          <option value="BENGALURU">Bangaluru</option>
+          <option value="CHENNAI">Chennai</option>
+          <option value="GOA">Goa</option>
+          <option value="Pune">Pune</option>
+          <option value="COIMBATORE">Coimbatore</option>
+          <option value="TRIVANDRUM">Trivandrum</option>
+        </select>
+      );
+    } else if (selectedValue === "ASSET_CATEGORY") {
+      return (
+        <select
+          className="category-input"
+          value={categoryValue}
+          onChange={(e) => setCategoryValue(e.target.value)}
+        >
+          <option value="">Select Asset Category</option>
+          <option value="HARDWARE">Hardware</option>
+          <option value="FLASHING_TOOL">Flashing Tool</option>
+          <option value="PHONES">Phones</option>
+          <option value="HEADSET">Headset</option>
+          <option value="CAMERA">Camera</option>
+          <option value="ANTENA">Antena</option>
+          <option value="PENDRIVE">Pendrive</option>
+          <option value="ACCESSORIES">Accessories</option>
+          <option value="TEST_PANEL">Test Panel</option>
+          <option value="OTHER">Other</option>
+        </select>
+      );
+    } else {
+      // Default to text input for other categories
+      return (
+        <input
+          className="category-input"
+          type="text"
+          value={categoryValue}
+          onChange={(e) => setCategoryValue(e.target.value)}
+        />
+      );
     }
-    setSelectedValue(event.target.value);
   };
 
   return (
@@ -31,13 +89,13 @@ function Header({ changeCategory, searched }) {
             <option className="option" value="NAME">Name</option>
           </select>
         </label>
-        {enableInput && <input className="category-input" type="text" value={categoryValue} onChange={(e) => setCategoryValue(e.target.value)} />}
+        {enableInput && renderInputField()}
         <span className="btn-header-container">
           <button onClick={() => { searched(selectedValue, categoryValue) }}>Search</button>
         </span>
       </div>
     </div>
-  )
+  );
 }
 
-export default Header
+export default Header;
