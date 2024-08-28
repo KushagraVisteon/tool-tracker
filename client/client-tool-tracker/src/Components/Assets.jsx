@@ -19,7 +19,7 @@ function Assets({ loading, data, download }) {
       {data && data.length > 0 ? <BasicTable data={data} /> : null}
       <div className="assets-buttons">
         <button onClick={() => setIsClicked(prev => !prev)}>Add</button>
-        {loading && <div>Fetching the details, please wait...</div>}
+        {loading && <div className='loading-overlay'></div>}
         {data && data.length === 0 && !loading && <div>No asset found for this search</div>}
         {data && data.length > 0 && <button onClick={() => { download() }}>Download Data</button>}
       </div>
