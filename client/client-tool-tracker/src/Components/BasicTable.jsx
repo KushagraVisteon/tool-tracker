@@ -15,7 +15,7 @@ export default function BasicTable({ data }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
+        <TableHead style={{ background: "#dededf" }}>
           <TableRow>
             <TableCell align="center">Name</TableCell>
             <TableCell align="center">CDSID</TableCell>

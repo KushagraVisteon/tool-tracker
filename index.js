@@ -68,7 +68,7 @@ app.get("/assets/find-by-category/:category/:value", async (req, res) => {
 
 app.post("/assets/add", async (req, res) => {
   console.log(req.body.asset);
-  let { name, cdsid, location, assetType ,assetCategory, assetId, project } =
+  let { name, cdsid, location, assetType, assetCategory, assetId, project } =
     req.body.asset;
   name = name.toUpperCase();
   location = location.toUpperCase();
@@ -81,7 +81,7 @@ app.post("/assets/add", async (req, res) => {
       name,
       cdsid,
       location,
-      asset_type : assetType,
+      asset_type: assetType,
       asset_category: assetCategory,
       asset_id: assetId,
       project,
@@ -102,6 +102,30 @@ app.get("/location", async (req, res) => {
     res.status(200).json(data);
   } catch (err) {
     console.log(err);
+    res.status(400).json("Server Error");
+  }
+});
+
+// api route to fetch all the distinct projects
+
+app.get("/find/distinct-projects", async (req, res) => {
+  try {
+    const distinctProjects = await AssignedAssest.distinct("project");
+    res.status(200).json(distinctProjects);
+  } catch (err) {
+    console.error("Error retrieving distinct projects:", err);
+    res.status(400).json("Server Error");
+  }
+});
+
+// api route to fetch all the distinct names
+
+app.get("/find/distinct-names", async (req, res) => {
+  try {
+    const distinctNames = await AssignedAssest.distinct("name");
+    res.status(200).json(distinctNames);
+  } catch (err) {
+    console.error("Error retrieving distinct names:", err);
     res.status(400).json("Server Error");
   }
 });

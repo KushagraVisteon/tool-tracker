@@ -138,3 +138,8 @@ button:hover {
   font-size: 2rem;
   color: #333;
 }
+
+.autocomplete-width {
+  width: 300px;
+  /* Adjust width as needed */
+}
