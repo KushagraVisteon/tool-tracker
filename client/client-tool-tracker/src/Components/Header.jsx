@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import PrimaryButton from "./PrimaryButton";
 
 function Header({ changeCategory, searched }) {
-
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState("");
   const [enableInput, setEnableInput] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");
 
@@ -16,13 +16,13 @@ function Header({ changeCategory, searched }) {
       setEnableInput(true);
     } else {
       setEnableInput(false);
-      setCategoryValue(''); // Reset category value when no filter is selected
+      setCategoryValue(""); // Reset category value when no filter is selected
     }
   };
 
   useEffect(() => {
-    console.log("categoryValue is: " + categoryValue)
-  }, [categoryValue])
+    console.log("categoryValue is: " + categoryValue);
+  }, [categoryValue]);
 
   // Determine what input type to show
   const renderInputField = () => {
@@ -37,7 +37,7 @@ function Header({ changeCategory, searched }) {
           <option value="BENGALURU">Bangaluru</option>
           <option value="CHENNAI">Chennai</option>
           <option value="GOA">Goa</option>
-          <option value="Pune">Pune</option>
+          <option value="PUNE">Pune</option>
           <option value="COIMBATORE">Coimbatore</option>
           <option value="TRIVANDRUM">Trivandrum</option>
         </select>
@@ -79,20 +79,32 @@ function Header({ changeCategory, searched }) {
     <div className="header">
       <h1 className="heading_header">Tool Tracker</h1>
       <div className="filter-container">
-        <label>
+        <label className="filter-label">
           Filter By:
-          <select className="heading_header" value={selectedValue} onChange={handleSelectChange}>
-            <option className="option" value="NONE">None</option>
-            <option className="option" value="LOCATION">Location</option>
-            <option className="option" value="ASSET_CATEGORY">Asset Category</option>
-            <option className="option" value="PROJECT">Project</option>
-            <option className="option" value="NAME">Name</option>
+          <select
+            className="filter-select"
+            value={selectedValue}
+            onChange={handleSelectChange}
+          >
+            <option value="NONE">None</option>
+            <option value="LOCATION">Location</option>
+            <option value="ASSET_CATEGORY">Asset Category</option>
+            <option value="PROJECT">Project</option>
+            <option value="NAME">Name</option>
           </select>
         </label>
-        {enableInput && renderInputField()}
-        <span className="btn-header-container">
-          <button onClick={() => { searched(selectedValue, categoryValue) }}>Search</button>
-        </span>
+        {enableInput && (
+          <div className="input-field-container">{renderInputField()}</div>
+        )}
+        <div className="btn-header-container">
+          <PrimaryButton
+            onClick={() => {
+              searched(selectedValue, categoryValue);
+            }}
+          >
+            Search
+          </PrimaryButton>
+        </div>
       </div>
     </div>
   );

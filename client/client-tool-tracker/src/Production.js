@@ -1,5 +1,5 @@
-const isLive = true;
+const isLive = false;
 let localhost = "";
-if (!isLive) localhost = "http://localhost:3000"
+if (!isLive) localhost = "http://localhost:3000";
 
 export { localhost };

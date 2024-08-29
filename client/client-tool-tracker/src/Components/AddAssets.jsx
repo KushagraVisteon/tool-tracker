@@ -1,77 +1,105 @@
-import { useState } from 'react'
-import { localhost } from '../Production';
+import { useState } from "react";
+import { localhost } from "../Production";
+import { Button } from "@mui/material";
+import PrimaryButton from "./PrimaryButton";
 function AddAssets({ isCancled }) {
+  const [name, setName] = useState("");
+  const [cdsid, setCdsid] = useState("");
+  const [location, setLocation] = useState("");
+  const [assetCategory, setAssetCategory] = useState("");
+  const [assetId, setAssetId] = useState("");
+  const [project, setProject] = useState("");
+  const [assetType, setAssetType] = useState("");
 
-  const [name, setName] = useState('');
-  const [cdsid, setCdsid] = useState('');
-  const [location, setLocation] = useState('');
-  const [assetCategory, setAssetCategory] = useState('');
-  const [assetId, setAssetId] = useState('');
-  const [project , setProject] = useState('')
-  const [assetType , setAssetType] = useState('')
-
-  const clearFeild =  () =>{
-    setName ('');
-    setCdsid ('');
-    setLocation('')
-    setAssetCategory('')
-    setAssetId('')
-    setProject('')
-    setAssetType('')
-  }
-
+  const clearFeild = () => {
+    setName("");
+    setCdsid("");
+    setLocation("");
+    setAssetCategory("");
+    setAssetId("");
+    setProject("");
+    setAssetType("");
+  };
 
   const onAddAsset = async () => {
     // if (name && cdsid && location && assetCategory && assetId && project && assetType) {
-      const asset = { name, cdsid, location, assetCategory, assetId, project ,assetType };
-      try {
-        const response = await fetch(`${localhost}/assets/add`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ asset }),
-        });
+    const asset = {
+      name,
+      cdsid,
+      location,
+      assetCategory,
+      assetId,
+      project,
+      assetType,
+    };
+    try {
+      const response = await fetch(`${localhost}/assets/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ asset }),
+      });
 
-        if (!response.ok) {
-          console.log('Network response was not ok');
-        }
-
-        const result = await response.json();
-      } catch (error) {
-        console.error('Error:', error);
+      if (!response.ok) {
+        console.log("Network response was not ok");
       }
+
+      const result = await response.json();
+    } catch (error) {
+      console.error("Error:", error);
+    }
     // }
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("add")
-    onAddAsset({ name, cdsid, location, assetCategory, assetId , project,assetType});
-    clearFeild()
+    console.log("add");
+    onAddAsset({
+      name,
+      cdsid,
+      location,
+      assetCategory,
+      assetId,
+      project,
+      assetType,
+    });
+    clearFeild();
   };
 
   return (
-    <div className='assets-form-container'>
-      <form className='assets-form' onSubmit={handleSubmit}>
-        <div className='form-group'>
+    <div className="assets-form-container">
+      <form className="assets-form" onSubmit={handleSubmit}>
+        <div className="form-group">
           <label>
             Name:
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </label>
         </div>
 
-        <div className='form-group'>
+        <div className="form-group">
           <label>
             CDSID:
-            <input type="text" value={cdsid} onChange={(e) => setCdsid(e.target.value)}  />
+            <input
+              type="text"
+              value={cdsid}
+              onChange={(e) => setCdsid(e.target.value)}
+            />
           </label>
         </div>
 
-        <div className='form-group'>
+        <div className="form-group">
           <label>
             Location:
-            <select value={location} onChange={(e) => setLocation(e.target.value)}>
+            <select
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            >
               <option value="">Select</option>
               <option value="BENGALURU">Bangaluru</option>
               <option value="CHENNAI">Chennai</option>
@@ -83,10 +111,13 @@ function AddAssets({ isCancled }) {
           </label>
         </div>
 
-        <div className='form-group'>
+        <div className="form-group">
           <label>
             Asset Category:
-            <select value={assetCategory} onChange={(e) => setAssetCategory(e.target.value)}>
+            <select
+              value={assetCategory}
+              onChange={(e) => setAssetCategory(e.target.value)}
+            >
               <option value="">Other</option>
               <option value="HARDWARE">Hardware</option>
               <option value="FLASHING_TOOL">Flashing Tool</option>
@@ -102,35 +133,53 @@ function AddAssets({ isCancled }) {
           </label>
         </div>
 
-        <div className='form-group'>
+        <div className="form-group">
           <label>
             Asset Type:
-            <input type="text" value={assetType} onChange={(e) => setAssetType(e.target.value)} />
+            <input
+              type="text"
+              value={assetType}
+              onChange={(e) => setAssetType(e.target.value)}
+            />
           </label>
         </div>
 
-
-        <div className='form-group'>
+        <div className="form-group">
           <label>
             Asset ID:
-            <input type="text" value={assetId} onChange={(e) => setAssetId(e.target.value)} />
+            <input
+              type="text"
+              value={assetId}
+              onChange={(e) => setAssetId(e.target.value)}
+            />
           </label>
         </div>
 
-        <div className='form-group'>
+        <div className="form-group">
           <label>
             Project:
-            <input type="text" value={project} onChange={(e) => setProject(e.target.value)} />
+            <input
+              type="text"
+              value={project}
+              onChange={(e) => setProject(e.target.value)}
+            />
           </label>
         </div>
 
-        <div className='form-buttons'>
-          <button type="submit">Add Asset</button>
-          <button type="button" onClick={() => {isCancled()}}>Cancel</button>
+        <div className="form-buttons">
+          <PrimaryButton type="submit">Add Asset</PrimaryButton>
+
+          <PrimaryButton
+            onClick={() => {
+              isCancled();
+            }}
+          >
+            Cancel
+          </PrimaryButton>
         </div>
       </form>
     </div>
-  )
+  );
 }
 
-export default AddAssets
+export default AddAssets;
