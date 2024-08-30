@@ -35,15 +35,15 @@ function Header({ changeCategory, searched }) {
   ];
 
   // Fetch distinct projects and names on component mount
-  useEffect(() => {
+  useEffect(async () => {
     // Fetch distinct projects
-    fetch(`${localhost}/find/distinct-projects`)
+    await fetch(`${localhost}/find/distinct-projects`)
       .then((response) => response.json())
       .then((data) => setProjectOptions(data))
       .catch((error) => console.error("Error fetching projects:", error));
 
     // Fetch distinct names
-    fetch(`${localhost}/find/distinct-names`)
+    await fetch(`${localhost}/find/distinct-names`)
       .then((response) => response.json())
       .then((data) => setNameOptions(data))
       .catch((error) => console.error("Error fetching names:", error));
