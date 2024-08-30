@@ -29,7 +29,7 @@ app.get("/", function (req, res) {
 
 app.get("/assets/findall", async (req, res) => {
   try {
-    console.log("Hi");
+    // console.log("Hi");
     const assignedAssests = await AssignedAssest.find();
     console.log(assignedAssests);
     res.status(200).json(assignedAssests);

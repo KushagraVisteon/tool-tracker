@@ -16,22 +16,22 @@ function Header({ changeCategory, searched }) {
   const locationOptions = [
     "BENGALURU",
     "CHENNAI",
+    "COIMBATORE",
     "GOA",
     "PUNE",
-    "COIMBATORE",
     "TRIVANDRUM",
   ];
   const assetCategoryOptions = [
-    "HARDWARE",
-    "FLASHING_TOOL",
-    "PHONES",
-    "HEADSET",
-    "CAMERA",
-    "ANTENA",
-    "PENDRIVE",
     "ACCESSORIES",
-    "TEST_PANEL",
+    "ANTENA",
+    "CAMERA",
+    "FLASHING_TOOL",
+    "HARDWARE",
+    "HEADSET",
     "OTHER",
+    "PENDRIVE",
+    "PHONES",
+    "TEST_PANEL"
   ];
 
   // Fetch distinct projects and names on component mount
@@ -184,7 +184,6 @@ function Header({ changeCategory, searched }) {
             onChange={handleSelectChange}
             sx={{
               minWidth: 220,
-              marginBottom: 2,
               backgroundColor: "white", // Add white background
               borderRadius: "5px", // Optional: Adds rounded corners
             }}
