@@ -28,6 +28,7 @@ function App() {
       asset_category: assets.asset_category,
       asset_id: assets.asset_id,
       project: assets.project,
+      comment: assets.comment,
     };
 
     const worksheet = XLSX.utils.json_to_sheet(assets);

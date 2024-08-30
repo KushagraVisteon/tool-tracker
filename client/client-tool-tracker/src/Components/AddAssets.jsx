@@ -2,6 +2,7 @@ import { useState } from "react";
 import { localhost } from "../Production";
 import { Button } from "@mui/material";
 import PrimaryButton from "./PrimaryButton";
+
 function AddAssets({ isCancled }) {
   const [name, setName] = useState("");
   const [cdsid, setCdsid] = useState("");
@@ -10,6 +11,8 @@ function AddAssets({ isCancled }) {
   const [assetId, setAssetId] = useState("");
   const [project, setProject] = useState("");
   const [assetType, setAssetType] = useState("");
+  const [comment, setComment] = useState("");
+  const [cdsidWarning, setCdsidWarning] = useState(""); // State for warning message
 
   const clearFeild = () => {
     setName("");
@@ -19,10 +22,11 @@ function AddAssets({ isCancled }) {
     setAssetId("");
     setProject("");
     setAssetType("");
+    setComment("");
+    setCdsidWarning(""); // Clear warning message
   };
 
   const onAddAsset = async () => {
-    // if (name && cdsid && location && assetCategory && assetId && project && assetType) {
     const asset = {
       name,
       cdsid,
@@ -31,6 +35,7 @@ function AddAssets({ isCancled }) {
       assetId,
       project,
       assetType,
+      comment,
     };
     try {
       const response = await fetch(`${localhost}/assets/add`, {
@@ -49,11 +54,15 @@ function AddAssets({ isCancled }) {
     } catch (error) {
       console.error("Error:", error);
     }
-    // }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (cdsidWarning) {
+      // If there's a warning, do not proceed with the form submission
+      alert(cdsidWarning);
+      return;
+    }
     console.log("add");
     onAddAsset({
       name,
@@ -63,8 +72,21 @@ function AddAssets({ isCancled }) {
       assetId,
       project,
       assetType,
+      comment,
     });
     clearFeild();
+  };
+
+  const handleCdsidChange = (e) => {
+    const value = e.target.value;
+    setCdsid(value);
+
+    // Check if value contains spaces
+    if (/\s/.test(value)) {
+      setCdsidWarning("CDSID should not contain spaces.");
+    } else {
+      setCdsidWarning(""); // Clear warning if no spaces
+    }
   };
 
   return (
@@ -88,9 +110,13 @@ function AddAssets({ isCancled }) {
             <input
               type="text"
               value={cdsid}
-              onChange={(e) => setCdsid(e.target.value)}
+              required
+              onChange={handleCdsidChange}
             />
           </label>
+          {cdsidWarning && (
+            <p style={{ color: "red" }}>{cdsidWarning}</p> // Display warning message
+          )}
         </div>
 
         <div className="form-group">
@@ -101,7 +127,7 @@ function AddAssets({ isCancled }) {
               onChange={(e) => setLocation(e.target.value)}
             >
               <option value="">Select</option>
-              <option value="BENGALURU">Bangaluru</option>
+              <option value="BANGALORE">Bangalore</option>
               <option value="CHENNAI">Chennai</option>
               <option value="GOA">Goa</option>
               <option value="PUNE">Pune</option>
@@ -166,16 +192,20 @@ function AddAssets({ isCancled }) {
           </label>
         </div>
 
+        <div className="form-group">
+          <label>
+            Comment:
+            <input
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+          </label>
+        </div>
+
         <div className="form-buttons">
           <PrimaryButton type="submit">Add Asset</PrimaryButton>
-
-          <PrimaryButton
-            onClick={() => {
-              isCancled();
-            }}
-          >
-            Cancel
-          </PrimaryButton>
+          <PrimaryButton onClick={isCancled}>Cancel</PrimaryButton>
         </div>
       </form>
     </div>

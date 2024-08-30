@@ -18,6 +18,23 @@ function Assets({ loading, data, download }) {
   return (
     <div className="assets">
       {data && data.length > 0 ? <BasicTable data={data} /> : null}
+
+      {loading && <div className="loading-overlay"></div>}
+      {data && data.length === 0 && !loading && (
+        <div>No asset found for this search</div>
+      )}
+
+      {data && data.length > 0 && (
+        <PrimaryButton
+          onClick={() => {
+            download();
+          }}
+          variant="contained"
+        >
+          Download Data
+        </PrimaryButton>
+      )}
+
       <div className="assets-buttons">
         <PrimaryButton
           onClick={() => setIsClicked((prev) => !prev)}
@@ -25,22 +42,8 @@ function Assets({ loading, data, download }) {
         >
           Add
         </PrimaryButton>
-        {loading && <div className="loading-overlay"></div>}
-        {data && data.length === 0 && !loading && (
-          <div>No asset found for this search</div>
-        )}
-
-        {data && data.length > 0 && (
-          <PrimaryButton
-            onClick={() => {
-              download();
-            }}
-            variant="contained"
-          >
-            Download Data
-          </PrimaryButton>
-        )}
       </div>
+
       {isClicked ? <AddAssets isCancled={isCancled} /> : null}
     </div>
   );

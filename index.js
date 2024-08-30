@@ -54,9 +54,9 @@ app.get("/assets/find-by-category/:category/:value", async (req, res) => {
     } else if (category === "PROJECT") {
       console.log("Hi");
       assignedAssests = await AssignedAssest.find({ project: value });
-    } else if (category === "NAME") {
+    } else if (category === "CDSID") {
       console.log("4");
-      assignedAssests = await AssignedAssest.find({ name: value });
+      assignedAssests = await AssignedAssest.find({ cdsid: value });
     }
     console.log(assignedAssests);
     res.status(200).json(assignedAssests);
@@ -68,13 +68,15 @@ app.get("/assets/find-by-category/:category/:value", async (req, res) => {
 
 app.post("/assets/add", async (req, res) => {
   console.log(req.body.asset);
-  let { name, cdsid, location, assetType, assetCategory, assetId, project } =
+  let { name, cdsid, location, assetType, assetCategory, assetId, project, comment } =
     req.body.asset;
   name = name.toUpperCase();
+  cdsid = cdsid.toUpperCase();
   location = location.toUpperCase();
   assetCategory = assetCategory.toUpperCase();
   project = project.toUpperCase();
   assetType.toUpperCase();
+  comment = comment.toUpperCase();
 
   try {
     const assignedAssest = new AssignedAssest({
@@ -85,6 +87,7 @@ app.post("/assets/add", async (req, res) => {
       asset_category: assetCategory,
       asset_id: assetId,
       project,
+      comment,
     });
 
     await assignedAssest.save();
@@ -120,12 +123,12 @@ app.get("/find/distinct-projects", async (req, res) => {
 
 // api route to fetch all the distinct names
 
-app.get("/find/distinct-names", async (req, res) => {
+app.get("/find/distinct-cdsids", async (req, res) => {
   try {
-    const distinctNames = await AssignedAssest.distinct("name");
+    const distinctNames = await AssignedAssest.distinct("cdsid");
     res.status(200).json(distinctNames);
   } catch (err) {
-    console.error("Error retrieving distinct names:", err);
+    console.error("Error retrieving distinct cdsids:", err);
     res.status(400).json("Server Error");
   }
 });

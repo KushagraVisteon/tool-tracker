@@ -14,7 +14,7 @@ function Header({ changeCategory, searched }) {
 
   // Sample options for Location and Asset Category
   const locationOptions = [
-    "BENGALURU",
+    "BANGALORE",
     "CHENNAI",
     "COIMBATORE",
     "GOA",
@@ -43,10 +43,10 @@ function Header({ changeCategory, searched }) {
       .catch((error) => console.error("Error fetching projects:", error));
 
     // Fetch distinct names
-    await fetch(`${localhost}/find/distinct-names`)
+    await fetch(`${localhost}/find/distinct-cdsids`)
       .then((response) => response.json())
       .then((data) => setNameOptions(data))
-      .catch((error) => console.error("Error fetching names:", error));
+      .catch((error) => console.error("Error fetching cdsid:", error));
   }, []);
 
   const handleSelectChange = (event) => {
@@ -75,7 +75,7 @@ function Header({ changeCategory, searched }) {
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Select Location"
+
               variant="outlined"
               sx={{
                 width: "250px",
@@ -97,7 +97,7 @@ function Header({ changeCategory, searched }) {
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Select Asset Category"
+
               variant="outlined"
               sx={{
                 width: "250px",
@@ -119,7 +119,7 @@ function Header({ changeCategory, searched }) {
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Select Project"
+
               variant="outlined"
               sx={{
                 width: "250px",
@@ -131,7 +131,7 @@ function Header({ changeCategory, searched }) {
           )}
         />
       );
-    } else if (selectedValue === "NAME") {
+    } else if (selectedValue === "CDSID") {
       return (
         <Autocomplete
           className="autocomplete"
@@ -141,7 +141,7 @@ function Header({ changeCategory, searched }) {
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Select Name"
+
               variant="outlined"
               sx={{
                 width: "200px",
@@ -192,7 +192,7 @@ function Header({ changeCategory, searched }) {
             <MenuItem value="LOCATION">Location</MenuItem>
             <MenuItem value="ASSET_CATEGORY">Asset Category</MenuItem>
             <MenuItem value="PROJECT">Project</MenuItem>
-            <MenuItem value="NAME">Name</MenuItem>
+            <MenuItem value="CDSID">CDSID</MenuItem>
           </Select>
         </label>
         {enableInput && (

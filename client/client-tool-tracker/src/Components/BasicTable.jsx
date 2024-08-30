@@ -6,8 +6,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(name, calories, fat, carbs, protein, comments) {
+  return { name, calories, fat, carbs, protein, comments };
 }
 
 export default function BasicTable({ data }) {
@@ -17,13 +17,14 @@ export default function BasicTable({ data }) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead style={{ background: "#dededf" }}>
           <TableRow>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center">CDSID</TableCell>
-            <TableCell align="center">Location</TableCell>
-            <TableCell align="center">Asset Category</TableCell>
-            <TableCell align="center">Asset Type</TableCell>
-            <TableCell align="center">Asset ID</TableCell>
-            <TableCell align="center">Project</TableCell>
+            <TableCell align="start">Name</TableCell>
+            <TableCell align="start">CDSID</TableCell>
+            <TableCell align="start">Location</TableCell>
+            <TableCell align="start">Asset Category</TableCell>
+            <TableCell align="start">Asset Type</TableCell>
+            <TableCell align="start">Asset ID</TableCell>
+            <TableCell align="start">Project</TableCell>
+            <TableCell align="start">Comment</TableCell> {/* New Comments Column */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -35,12 +36,15 @@ export default function BasicTable({ data }) {
               <TableCell component="th" scope="row" align="center">
                 {row.name}
               </TableCell>
-              <TableCell align="center">{row.cdsid}</TableCell>
-              <TableCell align="center">{row.location}</TableCell>
-              <TableCell align="center">{row.asset_category}</TableCell>
-              <TableCell align="center">{row.asset_type}</TableCell>
-              <TableCell align="center">{row.asset_id}</TableCell>
-              <TableCell align="center">{row.project}</TableCell>
+              <TableCell align="start">{row.cdsid}</TableCell>
+              <TableCell align="start">{row.location}</TableCell>
+              <TableCell align="start">{row.asset_category}</TableCell>
+              <TableCell align="start">{row.asset_type}</TableCell>
+              <TableCell align="start">{row.asset_id}</TableCell>
+              <TableCell align="start">{row.project}</TableCell>
+              <TableCell align="start">
+                {row.comment || "No Comment"} {/* Display comments if available, otherwise empty */}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
