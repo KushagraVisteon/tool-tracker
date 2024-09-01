@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import Assets from "./Components/Assets";
 import Header from "./Components/Header";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { localhost } from "./Production";
+import BasicAppBar from "./Components/BasicAppBar";
 
 function App() {
   const searched = (filterType, filterValue) => {
@@ -15,6 +16,7 @@ function App() {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [logedIn, setLogedIn] = useState(false);
 
   const download = () => {
     exportToExcel();
@@ -51,7 +53,9 @@ function App() {
     setAssets([]);
     if (filterValue !== "" && filterType !== "NONE") {
       try {
-        console.log(`${localhost}/assets/find-by-category/${filterType}/${filterValue}`);
+        console.log(
+          `${localhost}/assets/find-by-category/${filterType}/${filterValue}`
+        );
         const response = await fetch(
           `${localhost}/assets/find-by-category/${filterType}/${filterValue}`
         );
@@ -76,11 +80,28 @@ function App() {
     }
   };
 
+  const isTokenPresent = () => {
+    setLogedIn(true);
+  };
+
   console.log(assets);
+  console.log("isLogedIn", logedIn);
+
+  const isLogedOut = () => {
+    setLogedIn(false);
+    console.log("press");
+  };
+
   return (
     <div className="app">
-      <Header searched={searched} />
-      <Assets loading={loading} download={download} data={assets} />
+      <Header isTokenPresent={isTokenPresent} searched={searched} />
+      <Assets
+        isLogedOut={isLogedOut}
+        logedIn={logedIn}
+        loading={loading}
+        download={download}
+        data={assets}
+      />
     </div>
   );
 }

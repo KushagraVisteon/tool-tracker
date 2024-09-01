@@ -24,7 +24,8 @@ export default function BasicTable({ data }) {
             <TableCell align="start">Asset Type</TableCell>
             <TableCell align="start">Asset ID</TableCell>
             <TableCell align="start">Project</TableCell>
-            <TableCell align="start">Comment</TableCell> {/* New Comments Column */}
+            <TableCell align="start">Comment</TableCell>{" "}
+            {/* New Comments Column */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -43,7 +44,8 @@ export default function BasicTable({ data }) {
               <TableCell align="start">{row.asset_id}</TableCell>
               <TableCell align="start">{row.project}</TableCell>
               <TableCell align="start">
-                {row.comment || "No Comment"} {/* Display comments if available, otherwise empty */}
+                {row.comment||"No Comment"}
+                {/* Display comments if available, otherwise empty */}
               </TableCell>
             </TableRow>
           ))}

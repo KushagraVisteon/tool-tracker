@@ -1,26 +1,30 @@
 import { useState, useEffect } from "react";
-import Asset from "./Asset";
 import AddAssets from "./AddAssets";
 import BasicTable from "./BasicTable";
-import { Button, ButtonGroup } from "@mui/material";
 import PrimaryButton from "./PrimaryButton";
 
-function Assets({ loading, data, download }) {
+function Assets({ loading, data, download, logedIn, isLogedOut }) {
   const [isClicked, setIsClicked] = useState(false);
+  const [isFirstFetch, setIsFirstFetch] = useState(true);
+
+  const token = localStorage.getItem("toolTrackerAuthToken");
+  const isTokenPresent = token !== undefined && token !== null;
+
   const isCancled = () => {
+    setIsFirstFetch(false);
     setIsClicked(false);
   };
   useEffect(() => {
     console.log("isLoading: " + loading);
   }, [loading]);
   console.log(data.length);
-
+  console.log("isfirstfetch", isFirstFetch);
   return (
     <div className="assets">
       {data && data.length > 0 ? <BasicTable data={data} /> : null}
 
       {loading && <div className="loading-overlay"></div>}
-      {data && data.length === 0 && !loading && (
+      {!isFirstFetch && data && data.length === 0 && !loading && (
         <div>No asset found for this search</div>
       )}
 
@@ -36,15 +40,22 @@ function Assets({ loading, data, download }) {
       )}
 
       <div className="assets-buttons">
-        <PrimaryButton
-          onClick={() => setIsClicked((prev) => !prev)}
-          variant="contained"
-        >
-          Add
-        </PrimaryButton>
+        {isTokenPresent !== undefined &&
+          isTokenPresent != null &&
+          isTokenPresent != "" &&
+          logedIn && (
+            <PrimaryButton
+              onClick={() => setIsClicked((prev) => !prev)}
+              variant="contained"
+            >
+              Add
+            </PrimaryButton>
+          )}
       </div>
 
-      {isClicked ? <AddAssets isCancled={isCancled} /> : null}
+      {isClicked && logedIn ? (
+        <AddAssets isCancled={isCancled} isLogedOut={isLogedOut} />
+      ) : null}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { localhost } from "../Production";
 import { Button } from "@mui/material";
 import PrimaryButton from "./PrimaryButton";
 
-function AddAssets({ isCancled }) {
+function AddAssets({ isCancled, isLogedOut, logedIn }) {
   const [name, setName] = useState("");
   const [cdsid, setCdsid] = useState("");
   const [location, setLocation] = useState("");
@@ -13,7 +13,8 @@ function AddAssets({ isCancled }) {
   const [assetType, setAssetType] = useState("");
   const [comment, setComment] = useState("");
   const [cdsidWarning, setCdsidWarning] = useState(""); // State for warning message
-
+  const token = localStorage.getItem("toolTrackerAuthToken");
+  const isTokenPresent = token !== undefined && token !== null;
   const clearFeild = () => {
     setName("");
     setCdsid("");
@@ -23,10 +24,13 @@ function AddAssets({ isCancled }) {
     setProject("");
     setAssetType("");
     setComment("");
-    setCdsidWarning(""); // Clear warning message
+    setCdsidWarning(""); // Clear warning messages
   };
 
   const onAddAsset = async () => {
+    // Retrieve token from local storage
+
+    // Prepare the asset data
     const asset = {
       name,
       cdsid,
@@ -37,20 +41,43 @@ function AddAssets({ isCancled }) {
       assetType,
       comment,
     };
+
     try {
-      const response = await fetch(`${localhost}/assets/add`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ asset }),
-      });
+      // Check if token exists
+      if (token) {
+        // Send request with token in headers
+        const response = await fetch(`${localhost}/assets/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in Authorization header
+          },
+          body: JSON.stringify({ asset }),
+        });
 
-      if (!response.ok) {
-        console.log("Network response was not ok");
+        if (!response.ok) {
+          console.log("Network response was not ok");
+        }
+
+        const result = await response.json();
+        console.log(result);
+        if (result.message === "Invalid credentials") {
+          alert("User Forbidden");
+          isLogedOut();
+          localStorage.removeItem("toolTrackerAuthToken");
+        }
+        if (result.message === "Token expired or invalid") {
+          alert("Sign In needed");
+          isLogedOut();
+          localStorage.removeItem("toolTrackerAuthToken");
+        }
+
+        // Handle the result as needed
+      } else {
+        alert("Session Expired Login Again");
+        console.log("Token is expired or not present");
+        localStorage.removeItem("toolTrackerAuthToken");
       }
-
-      const result = await response.json();
     } catch (error) {
       console.error("Error:", error);
     }
@@ -74,6 +101,7 @@ function AddAssets({ isCancled }) {
       assetType,
       comment,
     });
+
     clearFeild();
   };
 

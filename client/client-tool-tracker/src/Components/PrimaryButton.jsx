@@ -19,7 +19,7 @@ function PrimaryButton({ children, onClick, type }) {
   return (
     <CustomButton
       onClick={() => {
-        onClick();
+        if (onClick) onClick();
       }}
       variant="contained"
       type={type}

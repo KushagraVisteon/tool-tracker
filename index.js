@@ -6,7 +6,9 @@ import AssignedAssest from "./Models/AssignedAssits.js";
 import Location from "./Models/Location.js";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import User from "./Models/User.js";
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
 dotenv.config();
 
 const app = express();
@@ -17,6 +19,38 @@ app.use(cors());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const secretKey =
+  "280891b410b6f5279a90fe52bb5b8b3806e14b57b2c9ac310a229f50c47630d1";
+
+const vector = "0142a78e74b87ab26b961b8bd1d96cf6";
+
+const jwt_secret =
+  "25be109914839804d883b367353383f8212b9aa44d7eb72c12232afbe77bcbdb";
+
+// Encrypt the user ID
+const encryptId = (id) => {
+  const cipher = crypto.createCipheriv(
+    "aes-256-cbc",
+    Buffer.from(secretKey),
+    Buffer.from(vector)
+  ); // Replace with your secret key and initialization vector
+  let encryptedId = cipher.update(id, "utf8", "hex");
+  encryptedId += cipher.final("hex");
+  return encryptedId;
+};
+
+// Decrypt the user ID (if needed)
+const decryptId = (encryptedId) => {
+  const decipher = crypto.createDecipheriv(
+    "aes-256-cbc",
+    Buffer.from(secretKey),
+    Buffer.from(vector)
+  ); // Replace with your secret key and initialization vector
+  let decryptedId = decipher.update(encryptedId, "hex", "utf8");
+  decryptedId += decipher.final("utf8");
+  return decryptedId;
+};
 
 app.use(express.static(path.join(__dirname, "dist")));
 
@@ -67,18 +101,41 @@ app.get("/assets/find-by-category/:category/:value", async (req, res) => {
 });
 
 app.post("/assets/add", async (req, res) => {
-  console.log(req.body.asset);
-  let { name, cdsid, location, assetType, assetCategory, assetId, project, comment } =
-    req.body.asset;
-  name = name.toUpperCase();
-  cdsid = cdsid.toUpperCase();
-  location = location.toUpperCase();
-  assetCategory = assetCategory.toUpperCase();
-  project = project.toUpperCase();
-  assetType.toUpperCase();
-  comment = comment.toUpperCase();
+  // Retrieve the token from the Authorization header
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1]; // Get the token part after "Bearer "
+
+  // Verify the token
+  if (!token) {
+    return res.status(401).json({ message: "Token is required" });
+  }
 
   try {
+    // Verify the JWT token
+    const decoded = jwt.verify(token, jwt_secret);
+
+    // Process the asset data
+    let {
+      name,
+      cdsid,
+      location,
+      assetType,
+      assetCategory,
+      assetId,
+      project,
+      comment,
+    } = req.body.asset;
+
+    // Convert fields to uppercase
+    name = name.toUpperCase();
+    cdsid = cdsid.toUpperCase();
+    location = location.toUpperCase();
+    assetCategory = assetCategory.toUpperCase();
+    project = project.toUpperCase();
+    assetType = assetType.toUpperCase();
+    comment = comment.toUpperCase();
+
+    // Create and save the asset
     const assignedAssest = new AssignedAssest({
       name,
       cdsid,
@@ -93,8 +150,14 @@ app.post("/assets/add", async (req, res) => {
     await assignedAssest.save();
     res.status(201).json("Post Created");
   } catch (err) {
+    // Handle token verification errors
+    if (err.name === "JsonWebTokenError" || err.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expired or invalid" });
+    }
+
+    // Handle other errors
     console.error("Error creating a record:", err);
-    res.status(400).json("Server Error");
+    res.status(500).json("Server Error");
   }
 });
 
@@ -133,13 +196,75 @@ app.get("/find/distinct-cdsids", async (req, res) => {
   }
 });
 
-// app.get("/asset_category" ,async (req,res) =>{
+app.post("/auth", async (req, res) => {
+  const { email, password } = req.body;
+  const exp_time = "2s";
+  // Validate input
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
 
-// })
+  try {
+    // Search for the user in the database
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log(1);
+      return res.status(403).json({ message: "Invalid credentials" });
+    }
 
-// app.get("/projects" , async (req,res)=>{
+    // Encrypt the provided password and check if it matches
+    if (user.password !== password) {
+      console.log(2);
+      return res.status(403).json({ message: "Invalid credentials" });
+    }
+    console.log(3);
+    const encryptId = user._id;
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: encryptId },
+      jwt_secret,
+      { expiresIn: "15m" } // Token expiry time
+    );
 
-// })
+    // Send token to client
+    res.json({ token });
+  } catch (error) {
+    console.error("Error during authentication:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
+
+  // Validate input
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+
+  try {
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Create a new user
+    const newUser = new User({
+      email,
+      password, // Note: Password should be hashed in a real application
+    });
+
+    // Save the new user to the database
+    await newUser.save();
+
+    // Respond with success
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 mongoose
   .connect(
