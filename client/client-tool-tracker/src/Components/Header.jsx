@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import BasicModal from "./BasicModel";
 import LockIcon from "@mui/icons-material/Lock";
 
-function Header({ changeCategory, searched, isTokenPresent }) {
+function Header({ changeCategory, searched, isTokenPresent, setLogedIn }) {
   const [selectedValue, setSelectedValue] = useState("NONE");
   const [enableInput, setEnableInput] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");
@@ -202,6 +202,7 @@ function Header({ changeCategory, searched, isTokenPresent }) {
         <IconButton
           onClick={() => {
             localStorage.removeItem("toolTrackerAuthToken");
+            setLogedIn(false);
           }}
           sx={{ padding: "6px 22px" }}
           aria-label="delete"

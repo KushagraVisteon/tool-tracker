@@ -12,6 +12,7 @@ function AddAssets({ isCancled, isLogedOut, logedIn }) {
   const [project, setProject] = useState("");
   const [assetType, setAssetType] = useState("");
   const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
   const [cdsidWarning, setCdsidWarning] = useState(""); // State for warning message
   const token = localStorage.getItem("toolTrackerAuthToken");
   const isTokenPresent = token !== undefined && token !== null;
@@ -29,7 +30,7 @@ function AddAssets({ isCancled, isLogedOut, logedIn }) {
 
   const onAddAsset = async () => {
     // Retrieve token from local storage
-
+    setLoading(true);
     // Prepare the asset data
     const asset = {
       name,
@@ -60,7 +61,11 @@ function AddAssets({ isCancled, isLogedOut, logedIn }) {
         }
 
         const result = await response.json();
-        console.log(result);
+        console.log("result: " + result);
+        console.log("response: " + response);
+        if (result === "Post Created") {
+          alert("New tool added successfully!!!");
+        }
         if (result.message === "Invalid credentials") {
           alert("User Forbidden");
           isLogedOut();
@@ -81,6 +86,8 @@ function AddAssets({ isCancled, isLogedOut, logedIn }) {
     } catch (error) {
       console.error("Error:", error);
     }
+
+    setLoading(false);
   };
 
   const handleSubmit = (event) => {
@@ -119,6 +126,7 @@ function AddAssets({ isCancled, isLogedOut, logedIn }) {
 
   return (
     <div className="assets-form-container">
+      {loading && <div className="loading-overlay"></div>}
       <form className="assets-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>

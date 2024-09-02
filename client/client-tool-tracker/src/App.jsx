@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Assets from "./Components/Assets";
 import Header from "./Components/Header";
@@ -84,6 +84,19 @@ function App() {
     setLogedIn(true);
   };
 
+  const checkLocalStorageForDummyKey = () => {
+    const value = localStorage.getItem("toolTrackerAuthToken");
+    if (value !== null) {
+      setLogedIn(true);
+    } else {
+      setLogedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    checkLocalStorageForDummyKey();
+  }, []);
+
   console.log(assets);
   console.log("isLogedIn", logedIn);
 
@@ -94,7 +107,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header isTokenPresent={isTokenPresent} searched={searched} />
+      <Header isTokenPresent={isTokenPresent} searched={searched} setLogedIn={setLogedIn} />
       <Assets
         isLogedOut={isLogedOut}
         logedIn={logedIn}
