@@ -78,6 +78,14 @@ function Header({ changeCategory, searched, isTokenPresent, setLogedIn }) {
 
   // Determine what input type to show
   const renderInputField = () => {
+    // Common TextField style props
+    const textFieldStyle = {
+      width: "250px",
+      background: "white",
+      borderRadius: "5px",
+      margin: "15px 0px",
+    };
+
     if (selectedValue === "LOCATION") {
       return (
         <Autocomplete
@@ -89,12 +97,7 @@ function Header({ changeCategory, searched, isTokenPresent, setLogedIn }) {
             <TextField
               {...params}
               variant="outlined"
-              sx={{
-                width: "250px",
-                background: "white",
-                borderRadius: "5px",
-                margin: "15px 0px",
-              }}
+              sx={textFieldStyle}
             />
           )}
         />
@@ -110,12 +113,7 @@ function Header({ changeCategory, searched, isTokenPresent, setLogedIn }) {
             <TextField
               {...params}
               variant="outlined"
-              sx={{
-                width: "250px",
-                background: "white",
-                borderRadius: "5px",
-                margin: "15px 0px",
-              }}
+              sx={textFieldStyle}
             />
           )}
         />
@@ -124,19 +122,16 @@ function Header({ changeCategory, searched, isTokenPresent, setLogedIn }) {
       return (
         <Autocomplete
           className="autocomplete"
+          freeSolo // Allows users to enter any text, not limited to options
           options={projectOptions}
           value={categoryValue}
           onChange={(event, newValue) => setCategoryValue(newValue)}
+          onInputChange={(event, newInputValue) => setCategoryValue(newInputValue)} // Sync input with state
           renderInput={(params) => (
             <TextField
               {...params}
               variant="outlined"
-              sx={{
-                width: "250px",
-                background: "white",
-                borderRadius: "5px",
-                margin: "15px 0px",
-              }}
+              sx={textFieldStyle}
             />
           )}
         />
@@ -152,12 +147,7 @@ function Header({ changeCategory, searched, isTokenPresent, setLogedIn }) {
             <TextField
               {...params}
               variant="outlined"
-              sx={{
-                width: "200px",
-                background: "white",
-                borderRadius: "5px",
-                margin: "15px 0px",
-              }}
+              sx={textFieldStyle}
             />
           )}
         />
@@ -170,12 +160,7 @@ function Header({ changeCategory, searched, isTokenPresent, setLogedIn }) {
           value={categoryValue}
           onChange={(e) => setCategoryValue(e.target.value)}
           label="Enter value"
-          sx={{
-            width: "200px",
-            background: "white",
-            borderRadius: "5px",
-            margin: "15px 0px",
-          }}
+          sx={textFieldStyle}
         />
       );
     }

@@ -87,11 +87,14 @@ app.get("/assets/find-by-category/:category/:value", async (req, res) => {
       assignedAssests = await AssignedAssest.find({ asset_category: value });
     } else if (category === "PROJECT") {
       console.log("Hi");
-      assignedAssests = await AssignedAssest.find({ project: value });
+      // Use regex to find entries that contain the "value" in the project field
+      assignedAssests = await AssignedAssest.find({ project: { $regex: value, $options: "i" } });
     } else if (category === "CDSID") {
       console.log("4");
       assignedAssests = await AssignedAssest.find({ cdsid: value });
     }
+
+
     console.log(assignedAssests);
     res.status(200).json(assignedAssests);
   } catch (err) {
