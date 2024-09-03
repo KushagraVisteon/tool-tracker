@@ -10,6 +10,7 @@ import BasicAppBar from "./Components/BasicAppBar";
 function App() {
   const searched = (filterType, filterValue) => {
     console.log(filterType, filterValue);
+    setIsFirstFetch(false);
     fetchAssets(filterType, filterValue);
   };
 
@@ -17,6 +18,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [logedIn, setLogedIn] = useState(false);
+  const [isFirstFetch, setIsFirstFetch] = useState(true);
 
   const download = () => {
     exportToExcel();
@@ -114,6 +116,7 @@ function App() {
         loading={loading}
         download={download}
         data={assets}
+        isFirstFetch={isFirstFetch}
       />
     </div>
   );

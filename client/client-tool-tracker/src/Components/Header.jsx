@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import BasicModal from "./BasicModel";
 import LockIcon from "@mui/icons-material/Lock";
 
-function Header({ changeCategory, searched, isTokenPresent, setLogedIn }) {
+function Header({ changeCategory, searched, isTokenPresent, setLogedIn, setIsFirstFetch }) {
   const [selectedValue, setSelectedValue] = useState("NONE");
   const [enableInput, setEnableInput] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");

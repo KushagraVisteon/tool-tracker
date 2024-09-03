@@ -3,15 +3,15 @@ import AddAssets from "./AddAssets";
 import BasicTable from "./BasicTable";
 import PrimaryButton from "./PrimaryButton";
 
-function Assets({ loading, data, download, logedIn, isLogedOut }) {
+function Assets({ loading, data, download, logedIn, isLogedOut, isFirstFetch }) {
   const [isClicked, setIsClicked] = useState(false);
-  const [isFirstFetch, setIsFirstFetch] = useState(true);
+
 
   const token = localStorage.getItem("toolTrackerAuthToken");
   const isTokenPresent = token !== undefined && token !== null;
 
   const isCancled = () => {
-    setIsFirstFetch(false);
+    // setIsFirstFetch(false);
     setIsClicked(false);
   };
   useEffect(() => {
