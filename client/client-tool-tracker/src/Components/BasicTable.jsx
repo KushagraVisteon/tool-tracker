@@ -34,7 +34,7 @@ export default function BasicTable({ data }) {
               key={row._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row" align="center">
+              <TableCell component="th" scope="row" align="start">
                 {row.name}
               </TableCell>
               <TableCell align="start">{row.cdsid}</TableCell>
@@ -44,7 +44,7 @@ export default function BasicTable({ data }) {
               <TableCell align="start">{row.asset_id}</TableCell>
               <TableCell align="start">{row.project}</TableCell>
               <TableCell align="start">
-                {row.comment||"No Comment"}
+                {row.comment || "No Comment"}
                 {/* Display comments if available, otherwise empty */}
               </TableCell>
             </TableRow>
