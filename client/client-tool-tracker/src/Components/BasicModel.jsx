@@ -22,7 +22,7 @@ const style = {
 
 export default function BasicModal({ isOpen, isClosed, isTokenPresent }) {
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
+  const [cdsid, setCdsid] = useState("");
   const [password, setPassword] = useState("");
 
   const handleOpen = () => setOpen(true);
@@ -31,20 +31,17 @@ export default function BasicModal({ isOpen, isClosed, isTokenPresent }) {
     isClosed();
   };
 
-  const isValidEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
 
   const sendLoginReq = async () => {
-    if (!email || !password) {
-      alert("Email and password are required");
+    if (!cdsid || !password) {
+      alert("cdsid and password are required");
       return;
     }
 
-    if (!isValidEmail(email)) {
-      alert("Please enter a valid email address");
-      return;
-    }
+    // if (!isValidcdsid(cdsid)) {
+    //   alert("Please enter a valid cdsid address");
+    //   return;
+    // }
 
     try {
       const response = await fetch(`${localhost}/auth`, {
@@ -52,7 +49,7 @@ export default function BasicModal({ isOpen, isClosed, isTokenPresent }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ cdsid, password }),
       });
 
       if (response.ok) {
@@ -87,10 +84,10 @@ export default function BasicModal({ isOpen, isClosed, isTokenPresent }) {
           <TextField
             sx={{ marginBottom: "15px" }}
             id="outlined-email"
-            label="Email"
+            label="CDSID"
             variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={cdsid}
+            onChange={(e) => setCdsid(e.target.value)}
             fullWidth
           />
           <TextField

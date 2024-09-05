@@ -200,16 +200,16 @@ app.get("/find/distinct-cdsids", async (req, res) => {
 });
 
 app.post("/auth", async (req, res) => {
-  const { email, password } = req.body;
+  const { cdsid, password } = req.body;
   const exp_time = "2s";
   // Validate input
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
+  if (!cdsid || !password) {
+    return res.status(400).json({ message: "cdsid and password are required" });
   }
 
   try {
     // Search for the user in the database
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ cdsid });
     if (!user) {
       console.log(1);
       return res.status(403).json({ message: "Invalid credentials" });
@@ -238,23 +238,23 @@ app.post("/auth", async (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { cdsid, password } = req.body;
 
   // Validate input
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
+  if (!cdsid || !password) {
+    return res.status(400).json({ message: "cdsid and password are required" });
   }
 
   try {
     // Check if the user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ cdsid });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
     // Create a new user
     const newUser = new User({
-      email,
+      cdsid,
       password, // Note: Password should be hashed in a real application
     });
 
