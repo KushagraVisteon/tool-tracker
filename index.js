@@ -239,6 +239,7 @@ app.post("/auth", async (req, res) => {
 
 app.post("/register", async (req, res) => {
   const { cdsid, password } = req.body;
+  //console.log("Cdsid: " + cdsid + " Password: " + password);
 
   // Validate input
   if (!cdsid || !password) {

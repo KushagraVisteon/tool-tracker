@@ -4,21 +4,29 @@ import TextField from "@mui/material/TextField";
 import PrimaryButton from "./PrimaryButton";
 import { MenuItem, Select } from "@mui/material";
 import { localhost } from "../Production";
-import { Login } from "@mui/icons-material";
+import { Add, Login } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import BasicModal from "./BasicModel";
+import RegisterModal from "./RegisterModal"
 import LockIcon from "@mui/icons-material/Lock";
+import LogoutIcon from '@mui/icons-material/Logout';
 
-function Header({ changeCategory, searched, isTokenPresent, setLogedIn, setIsFirstFetch }) {
+function Header({ logedIn, changeCategory, searched, isTokenPresent, setLogedIn, setIsFirstFetch }) {
   const [selectedValue, setSelectedValue] = useState("NONE");
   const [enableInput, setEnableInput] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");
   const [projectOptions, setProjectOptions] = useState([]); // State to store fetched project options
   const [nameOptions, setNameOptions] = useState([]); // State to store fetched name options
   const [isModelClicked, setIsModelClicked] = useState(false);
+  const [isRegisterModelClicked, setIsRegisterModelClicked] = useState(false);
+
+
 
   const isModalClosed = () => {
     setIsModelClicked(false);
+  };
+  const isRegisterModalClosed = () => {
+    setIsRegisterModelClicked(false);
   };
 
   // Sample options for Location and Asset Category
@@ -173,27 +181,58 @@ function Header({ changeCategory, searched, isTokenPresent, setLogedIn, setIsFir
         isOpen={isModelClicked}
         isClosed={isModalClosed}
       />
+
+
+      {isTokenPresent !== undefined &&
+        isTokenPresent != null &&
+        isTokenPresent != "" &&
+        logedIn && (
+          <RegisterModal
+            isTokenPresent={isTokenPresent}
+            isOpen={isRegisterModelClicked}
+            isClosed={isRegisterModalClosed} />
+        )}
+
+
       <div className="flex_container header">
         <h1 className="heading_header">Tool Tracker</h1>
-        <IconButton
-          onClick={() => {
-            setIsModelClicked(true);
-          }}
-          sx={{ padding: "6px 22px" }}
-          aria-label="delete"
-        >
-          <Login />
-        </IconButton>
-        <IconButton
-          onClick={() => {
-            localStorage.removeItem("toolTrackerAuthToken");
-            setLogedIn(false);
-          }}
-          sx={{ padding: "6px 22px" }}
-          aria-label="delete"
-        >
-          <LockIcon />
-        </IconButton>
+        {!logedIn &&
+          <IconButton
+            onClick={() => {
+              setIsModelClicked(true);
+            }}
+            sx={{ padding: "6px 22px" }}
+            aria-label="delete"
+          >
+            <Login />
+          </IconButton>}
+        {isTokenPresent !== undefined &&
+          isTokenPresent != null &&
+          isTokenPresent != "" &&
+          logedIn && (
+            <IconButton
+              onClick={() => {
+                setIsRegisterModelClicked(true);
+              }}
+              sx={{ padding: "6px 22px" }}
+              aria-label="delete"
+            >
+              <Add />
+            </IconButton>
+          )}
+        {logedIn &&
+          <IconButton
+            onClick={() => {
+              localStorage.removeItem("toolTrackerAuthToken");
+              setLogedIn(false);
+            }}
+            sx={{ padding: "6px 22px" }}
+            aria-label="delete"
+          >
+            <LogoutIcon />
+          </IconButton>}
+
+
       </div>
       <div className="filter-container">
         <label className="filter-label">

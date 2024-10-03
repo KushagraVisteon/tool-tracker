@@ -109,7 +109,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header isTokenPresent={isTokenPresent} searched={searched} setLogedIn={setLogedIn} />
+      <Header logedIn={logedIn} isTokenPresent={isTokenPresent} searched={searched} setLogedIn={setLogedIn} />
       <Assets
         isLogedOut={isLogedOut}
         logedIn={logedIn}
